@@ -1,14 +1,19 @@
 package com.learning.basic.orm;
 
+import com.learning.basic.orm.annotation.Column;
+import lombok.extern.slf4j.Slf4j;
+
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
+@Slf4j
 class FieldMapper {
 
     private static final Map<Class<?>, PreparedSetter> mappers = new HashMap<>();
@@ -20,7 +25,7 @@ class FieldMapper {
         mappers.put(BigDecimal.class, (ps, index, value) -> ps.setBigDecimal(index, (BigDecimal) value));
     }
 
-    public void setUpPreparedStatement(PreparedStatement ps, List<Object> values) {
+    public void setUpPreparedStatement(PreparedStatement ps, Object... values) {
         int index = 1;
         for (Object value : values) {
             try {
@@ -33,6 +38,29 @@ class FieldMapper {
             } catch (SQLException e) {
                 throw new IllegalStateException(e);
             }
+        }
+    }
+
+    public <ObjectType> Optional<ObjectType> mapToObject(ResultSet rs, Class<ObjectType> clazz) throws SQLException {
+        try {
+            var newObject = clazz.getConstructor().newInstance();
+
+            if (rs.next()) {
+                for (Field field : clazz.getDeclaredFields()) {
+                    var value = rs.getObject(field.getAnnotation(Column.class).value());
+                    var propertyDescriptor = new PropertyDescriptor(field.getName(), clazz);
+                    var setter = propertyDescriptor.getWriteMethod();
+                    setter.setAccessible(true);
+                    setter.invoke(newObject, value);
+                }
+            } else {
+                return Optional.empty();
+            }
+
+            return Optional.of(newObject);
+        } catch (ReflectiveOperationException | IntrospectionException e) {
+            log.error(e.getMessage());
+            throw new IllegalStateException(e);
         }
     }
 
