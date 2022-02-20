@@ -14,10 +14,9 @@ import java.util.function.Function;
 
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
-class SimpleContextInitializer implements ContextInitializer {
+public class SimpleContextInitializer {
 
-    @Override
-    public Map<Class<?>, Object> initializeContext(Class<?>... configClasses) {
+    public static Map<Class<?>, Object> initializeContext(Class<?>... configClasses) {
         for (Class<?> configClass : configClasses) {
             if (configClass.isAnnotationPresent(Configuration.class)) {
                 var packageToScan = configClass.getAnnotation(ComponentScan.class).value();
