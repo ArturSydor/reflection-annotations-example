@@ -1,4 +1,4 @@
-package com.learning.basic.reflaction;
+package com.learning.basic.reflaction_basic;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -6,7 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 public class ConstructorsOfTheClass {
     public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
-        var ironClazz = Class.forName("com.learning.basic.reflaction.IronMan");
+        var ironClazz = Class.forName("com.learning.basic.reflaction_basic.IronMan");
 
         // returns public constructors of class
         var publicConstructors = ironClazz.getConstructors();

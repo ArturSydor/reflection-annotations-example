@@ -1,14 +1,13 @@
-package com.learning.basic.reflaction;
+package com.learning.basic.reflaction_basic;
 
-import java.lang.reflect.Constructor;
 import java.util.Arrays;
 
 public class ClassObject {
     public static void main(String[] args) throws ClassNotFoundException {
 
         // forName
-        var clazz1 = Class.forName("com.learning.basic.reflaction.IronMan");
-        var clazz2 = Class.forName("com.learning.basic.reflaction.IronMan");
+        var clazz1 = Class.forName("com.learning.basic.reflaction_basic.IronMan");
+        var clazz2 = Class.forName("com.learning.basic.reflaction_basic.IronMan");
 
         // Class.forName always returns the same object
         System.out.println(clazz1 == clazz2);
