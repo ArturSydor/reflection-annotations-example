@@ -1,4 +1,4 @@
-package com.learning.basic.annotation;
+package com.learning.basic.reflaction_basic.annotation;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 public class ReadingAnnotations {
 
     public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        var utilClass = Class.forName("com.learning.basic.annotation.Utility");
+        var utilClass = Class.forName("com.learning.basic.reflaction_basic.annotation.Utility");
         var constructor = utilClass.getConstructor();
         var util = (Utility) constructor.newInstance();
 
